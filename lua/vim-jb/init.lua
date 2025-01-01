@@ -15,6 +15,7 @@ local flines = vim.fn.readfile(path)
 local jb_palettes = vim.fn.json_decode(vim.fn.join(flines))
 local colors = {}
 
+---@return vim-jb.Config -- current config (or default config if not configured)
 function jb.GetConfig()
     return {
         style = vim.fn.get(vim.g, 'jb_style', 'dark'),
@@ -24,6 +25,9 @@ function jb.GetConfig()
     }
 end
 
+---@param style     string theme style
+---@param overrides table  theme overrides
+---@return table -- theme colors
 function jb.GetColors(style, overrides)
     -- If style is anything other than 'dark', 'mid', 'light', set it's value to 'dark'
     local style = style == 'mid' and 'mid'
