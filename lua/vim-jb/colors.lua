@@ -26,9 +26,7 @@ if vim.fn.exists('syntax_on') then
     vim.cmd('syntax reset')
 end
 
-vim.o.t_Co = 256
-vim.o.t_Cs = '[4:3m'
-vim.o.t_Ce = '[4:0m'
+vim.o.termguicolors = true
 
 vim.g.colors_name = 'jb'
 vim.g.jb_termcolors = 256
