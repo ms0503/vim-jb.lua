@@ -10,7 +10,8 @@
 
 local jb = {}
 
-local path = vim.fn.expand('<sfile>:p:h') .. '/palettes.json'
+local path = debug.getinfo(1, 'S').source:sub(2):match('^(.*)/')
+    .. '/palettes.json'
 local flines = vim.fn.readfile(path)
 local jb_palettes = vim.fn.json_decode(vim.fn.join(flines))
 local colors = {}
