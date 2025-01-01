@@ -1,5 +1,5 @@
 ---@class vim-jb.Config
----@field style string
----@field overrides table
----@field enable_italic boolean
----@field enable_unicode boolean
+---@field style? string
+---@field overrides? table
+---@field enable_italic? boolean
+---@field enable_unicode? boolean

@@ -9,7 +9,7 @@
 -- Based On:        https://github.com/drewtempelmeyer/palenight.vim
 -- ===================================================================================
 
-local jb = require('vim-jb')
+local jb = require('vim-jb.util')
 
 function table.remove_by_key(table, key)
     local content = table[key]

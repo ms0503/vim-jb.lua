@@ -1,48 +1,28 @@
--- ==================================================================================
--- Original URL:    https://github.com/devsjc/vim-jb
--- Fork URL:        https://github.com/ms0503/vim-jb.lua
--- Filename:        lua/vim-jb/init.lua
--- Original Author: devsjc
--- Fork Author:     Sora Tonami
--- License:         The MIT License (MIT)
--- Based On:        https://github.com/sainnhe/sonokai
--- ==================================================================================
+-- === LUA MODULE ====================================================================
 
-local jb = {}
+local jb = require('vim-jb.util')
 
-local path = debug.getinfo(1, 'S').source:sub(2):match('^(.*)/')
-    .. '/palettes.json'
-local flines = vim.fn.readfile(path)
-local jb_palettes = vim.fn.json_decode(vim.fn.join(flines))
-local colors = {}
+local M = {}
 
----@return vim-jb.Config -- current config (or default config if not configured)
-function jb.GetConfig()
-    return {
-        style = vim.fn.get(vim.g, 'jb_style', 'dark'),
-        overrides = vim.fn.get(vim.g, 'jb_color_overrides', {}),
-        enable_italic = vim.fn.get(vim.g, 'jb_enable_italic', false),
-        enable_unicode = vim.fn.get(vim.g, 'jb_enable_unicode', false),
-    }
-end
+---@type {light?: string, dark?: string}
+M.styles = {}
 
----@param style     string theme style
----@param overrides table  theme overrides
----@return table -- theme colors
-function jb.GetColors(style, overrides)
-    -- If style is anything other than 'dark', 'mid', 'light', set it's value to 'dark'
-    local style = style == 'mid' and 'mid'
-        or style == 'light' and 'light'
-        or 'dark'
-    -- Load the palette according to the style
-    local palettes_dict = vim.fn.get(jb_palettes, style, {})
-    -- Populate the colors dictionary
-    for key, val in pairs(palettes_dict) do
-        colors[key] =
-            vim.fn.get(overrides, key, { gui = val.hex, cterm = val.xterm })
+---@param opts vim-jb.Config
+function M.load(opts)
+    opts = jb.GetConfig(opts)
+    local bg = vim.o.background
+    local style_bg = opts.style == 'light' and 'light' or 'dark'
+
+    if bg ~= style_bg then
+        if vim.g.colors_name == 'jb-' .. opts.style then
+            opts.style = bg == 'light' and (M.styles.light or 'light')
+                or (M.styles.dark or 'dark')
+        else
+            vim.o.background = style_bg
+        end
     end
-
-    return colors
+    M.styles[vim.o.background] = opts.style
+    require('vim-jb.colors')
 end
 
-return jb
+return M
