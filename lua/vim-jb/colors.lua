@@ -64,28 +64,13 @@ local function h(group, style)
             style.gui = nil
         end
     end
-    local ctermfg = (style.fg and style.fg.cterm or 'NONE')
-    local ctermbg = (style.bg and style.bg.cterm or 'NONE')
-    vim.cmd(
-        'highlight '
-            .. group
-            .. ' guifg='
-            .. (style.fg and style.fg.gui or 'NONE')
-            .. ' guibg='
-            .. (style.bg and style.bg.gui or 'NONE')
-            .. ' guisp='
-            .. (style.sp and style.sp.gui or 'NONE')
-            .. ' gui='
-            .. (style.gui and style.gui or 'NONE')
-            .. ' ctermfg='
-            .. ctermfg
-            .. ' ctermbg='
-            .. ctermbg
-            .. ' cterm='
-            .. (style.cterm and style.cterm or 'NONE')
-            .. ' ctermul='
-            .. (style.ctermul and style.ctermul or 'NONE')
-    )
+    vim.api.nvim_set_hl(0, group, {
+        fg = style.fg and style.fg.gui,
+        bg = style.bg and style.bg.gui,
+        sp = style.sp and style.sp.gui,
+        ctermfg = style.fg and style.fg.cterm,
+        ctermbg = style.bg and style.bg.cterm,
+    })
 end
 
 -- === JETBRAINS COLOR GROUPS ========================================================
@@ -98,11 +83,11 @@ h('JBSearchResult', { bg = colors.search }) -- Search results
 h('JBFoldedText', { fg = colors.comment, bg = colors.folded }) -- Folded text
 h(
     'JBError',
-    { gui = 'underline', cterm = 'undercurl', sp = colors.err, ctermul = 'red' }
+    { gui = 'undercurl', cterm = 'underline', sp = colors.err, ctermul = 'red' }
 ) -- Doesn't match JB exactly, can't do separate color undercurls in terminal
 h('JBWarning', {
     gui = 'undercurl',
-    cterm = 'undercurl',
+    cterm = 'underline',
     sp = colors.warning,
     ctermul = 'yellow',
 })
