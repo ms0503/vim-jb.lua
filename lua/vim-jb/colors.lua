@@ -57,34 +57,34 @@ vim.opt.fillchars.eob = [[\ ]]
 -- Which in turn was based on one found in hemisu: https://github.com/noahfrederick/vim-hemisu/
 local function h(group, style)
     if not config.enable_italic then
-        if vim.fn.has_key(style, 'cterm') and style['cterm'] == 'italic' then
+        if style.cterm and style.cterm == 'italic' then
             style.cterm = nil
         end
-        if vim.fn.has_key(style, 'gui') and style['gui'] == 'italic' then
+        if style.gui and style.gui == 'italic' then
             style.gui = nil
         end
     end
-    local ctermfg = (vim.fn.has_key(style, 'fg') and style.fg.cterm or 'NONE')
-    local ctermbg = (vim.fn.has_key(style, 'bg') and style.bg.cterm or 'NONE')
+    local ctermfg = (style.fg and style.fg.cterm or 'NONE')
+    local ctermbg = (style.bg and style.bg.cterm or 'NONE')
     vim.cmd(
         'highlight '
             .. group
             .. ' guifg='
-            .. (vim.fn.has_key(style, 'fg') and style.fg.gui or 'NONE')
+            .. (style.fg and style.fg.gui or 'NONE')
             .. ' guibg='
-            .. (vim.fn.has_key(style, 'bg') and style.bg.gui or 'NONE')
+            .. (style.bg and style.bg.gui or 'NONE')
             .. ' guisp='
-            .. (vim.fn.has_key(style, 'sp') and style.sp.gui or 'NONE')
+            .. (style.sp and style.sp.gui or 'NONE')
             .. ' gui='
-            .. (vim.fn.has_key(style, 'gui') and style.gui or 'NONE')
+            .. (style.gui and style.gui or 'NONE')
             .. ' ctermfg='
             .. ctermfg
             .. ' ctermbg='
             .. ctermbg
             .. ' cterm='
-            .. (vim.fn.has_key(style, 'cterm') and style.cterm or 'NONE')
+            .. (style.cterm and style.cterm or 'NONE')
             .. ' ctermul='
-            .. (vim.fn.has_key(style, 'ctermul') and style.ctermul or 'NONE')
+            .. (style.ctermul and style.ctermul or 'NONE')
     )
 end
 
