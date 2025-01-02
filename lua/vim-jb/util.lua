@@ -1,7 +1,7 @@
 -- ==================================================================================
 -- Original URL:    https://github.com/devsjc/vim-jb
 -- Fork URL:        https://github.com/ms0503/vim-jb.lua
--- Filename:        lua/vim-jb/init.lua
+-- Filename:        lua/vim-jb/util.lua
 -- Original Author: devsjc
 -- Fork Author:     Sora Tonami
 -- License:         The MIT License (MIT)
@@ -31,14 +31,13 @@ function jb.GetConfig(opts)
     }
 end
 
----@param style     string theme style
----@param overrides table  theme overrides
+---@param style?     string             theme style
+---@param overrides? table<string, any> theme overrides
 ---@return table -- theme colors
 function jb.GetColors(style, overrides)
     -- If style is anything other than 'dark', 'mid', 'light', set it's value to 'dark'
-    local style = style == 'mid' and 'mid'
-        or style == 'light' and 'light'
-        or 'dark'
+    style = style == 'mid' and 'mid' or style == 'light' and 'light' or 'dark'
+    overrides = overrides or {}
     -- Load the palette according to the style
     local palettes_dict = vim.fn.get(jb_palettes, style, {})
     -- Populate the colors dictionary
