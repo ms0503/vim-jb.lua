@@ -1,23 +1,26 @@
--- ===================================================================================
+-- =============================================================================
 -- Vim Color File
--- Original URL:    https://github.com/devsjc/vim-jb
--- Fork URL:        https://github.com/ms0503/vim-jb.lua
--- Filename:        lua/init.lua
--- Original Author: devsjc
--- Fork Author:     Sora Tonami
--- License:         The MIT License (MIT)
--- Based On:        https://github.com/drewtempelmeyer/palenight.vim
--- ===================================================================================
+-- Original URL:        https://github.com/devsjc/vim-jb
+-- Original Filename:   colors/jb.vim
+-- Original Author:     devsjc
+-- Fork URL:            https://github.com/ms0503/vim-jb.lua
+-- Fork Filename:       lua/vim-jb/colors.lua
+-- Fork Author:         Sora Tonami
+-- License:             The MIT License (MIT)
+-- Based On:            https://github.com/drewtempelmeyer/palenight.vim
+-- =============================================================================
 
 local jb = require('vim-jb.util')
 
-function table.remove_by_key(table, key)
-    local content = table[key]
-    table[key] = nil
+---@param key number|string key of item to remove
+---@return any -- removed item
+function table:remove_by_key(key)
+    local content = self[key]
+    self[key] = nil
     return content
 end
 
--- === Initialization ================================================================
+-- === Initialization ==========================================================
 
 vim.cmd('highlight clear')
 vim.o.cursorline = true
@@ -28,7 +31,6 @@ end
 
 vim.o.termguicolors = true
 
-vim.g.colors_name = 'jb'
 vim.g.jb_termcolors = 256
 
 local config = jb.GetConfig()
@@ -51,26 +53,43 @@ end
 table.remove_by_key(vim.opt.fillchars, 'eob')
 vim.opt.fillchars.eob = [[\ ]]
 
--- === FUNCTIONS =====================================================================
+-- === FUNCTIONS ===============================================================
 
 -- This function is based on one from FlatColor: https://github.com/MaxSt/FlatColor/
 -- Which in turn was based on one found in hemisu: https://github.com/noahfrederick/vim-hemisu/
+--
+---@param group string                group name
+---@param style vim-jb.HighlightStyle style settings
 local function h(group, style)
     if not config.enable_italic then
-        if style.cterm and style.cterm == 'italic' then
+        if style.cterm == 'italic' then
             style.cterm = nil
         end
-        if style.gui and style.gui == 'italic' then
+        if style.gui == 'italic' then
             style.gui = nil
         end
     end
-    vim.api.nvim_set_hl(0, group, {
-        fg = style.fg and style.fg.gui,
-        bg = style.bg and style.bg.gui,
-        sp = style.sp and style.sp.gui,
-        ctermfg = style.fg and style.fg.cterm,
-        ctermbg = style.bg and style.bg.cterm,
-    })
+    vim.cmd(
+        'highlight '
+            .. group
+            .. ' guifg='
+            .. (style.fg and style.fg.gui or 'NONE')
+            .. ' guibg='
+            .. (style.bg and style.bg.gui or 'NONE')
+            .. ' guisp='
+            .. (style.sp and style.sp.gui or 'NONE')
+            .. ' gui='
+            .. (style.gui and style.gui or 'NONE')
+            .. ' ctermfg='
+            .. (style.fg and style.fg.cterm or 'NONE')
+            .. ' ctermbg='
+            .. (style.bg and style.bg.cterm or 'NONE')
+            .. ' cterm='
+            .. (style.cterm and style.cterm or 'NONE')
+        -- `ctermul` argument is unsupported on Neovim
+        --     .. ' ctermul='
+        --     .. (style.ctermul and style.ctermul or 'NONE')
+    )
 end
 
 -- === JETBRAINS COLOR GROUPS ========================================================
@@ -609,4 +628,4 @@ end
 
 -- Must appear at the end of the file to work around this oddity:
 -- https://groups.google.com/forum/#!msg/vim_dev/afPqwAFNdrU/nqh6tOM87QUJ
-vim.o.background = 'dark'
+-- vim.o.background = 'dark'
