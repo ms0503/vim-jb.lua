@@ -1,19 +1,22 @@
--- ==================================================================================
--- Original URL:    https://github.com/devsjc/vim-jb
--- Fork URL:        https://github.com/ms0503/vim-jb.lua
--- Filename:        lua/vim-jb/util.lua
--- Original Author: devsjc
--- Fork Author:     Sora Tonami
--- License:         The MIT License (MIT)
--- Based On:        https://github.com/sainnhe/sonokai
--- ==================================================================================
+-- =============================================================================
+-- Original URL:        https://github.com/devsjc/vim-jb
+-- Original Filename:   autoload/jb.vim
+-- Original Author:     devsjc
+-- Fork URL:            https://github.com/ms0503/vim-jb.lua
+-- Fork Filename:       lua/vim-jb/util.lua
+-- Fork Author:         Sora Tonami
+-- License:             The MIT License (MIT)
+-- Based On:            https://github.com/sainnhe/sonokai
+-- =============================================================================
 
 local jb = {}
 
 local path = debug.getinfo(1, 'S').source:sub(2):match('^(.*)/')
     .. '/palettes.json'
 local flines = vim.fn.readfile(path)
+---@type vim-jb.ColorPalettes
 local jb_palettes = vim.fn.json_decode(vim.fn.join(flines))
+---@type vim-jb.Colors
 local colors = {}
 
 ---@param opts? vim-jb.Config config overrides
@@ -31,9 +34,9 @@ function jb.GetConfig(opts)
     }
 end
 
----@param style?     string             theme style
----@param overrides? table<string, any> theme overrides
----@return table -- theme colors
+---@param style?     vim-jb.Variants theme style
+---@param overrides? vim-jb.Colors   theme overrides
+---@return vim-jb.Colors -- theme colors
 function jb.GetColors(style, overrides)
     -- If style is anything other than 'dark', 'mid', 'light', set it's value to 'dark'
     style = style == 'mid' and 'mid' or style == 'light' and 'light' or 'dark'
