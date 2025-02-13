@@ -74,16 +74,14 @@ local function h(group, style)
             .. group
             .. ' guifg='
             .. (style.fg and style.fg.gui or 'NONE')
-            .. ' guibg='
-            .. (style.bg and style.bg.gui or 'NONE')
+            .. (config.transparent and '' or ' guibg=' .. (style.bg and style.bg.gui or 'NONE'))
             .. ' guisp='
             .. (style.sp and style.sp.gui or 'NONE')
             .. ' gui='
             .. (style.gui and style.gui or 'NONE')
             .. ' ctermfg='
             .. (style.fg and style.fg.cterm or 'NONE')
-            .. ' ctermbg='
-            .. (style.bg and style.bg.cterm or 'NONE')
+            .. (config.transparent and '' or ' ctermbg=' .. (style.bg and style.bg.cterm or 'NONE'))
             .. ' cterm='
             .. (style.cterm and style.cterm or 'NONE')
         -- `ctermul` argument is unsupported on Neovim

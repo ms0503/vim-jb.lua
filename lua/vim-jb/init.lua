@@ -17,11 +17,11 @@ function M.load(opts)
         if vim.g.colors_name == 'jb-' .. opts.style then
             opts.style = bg == 'light' and (M.styles.light or 'light')
                 or (M.styles.dark or 'dark')
-        else
+        elseif not opts.transparent then
             vim.o.background = style_bg
         end
     end
-    M.styles[vim.o.background] = opts.style
+    M.styles[bg or style_bg] = opts.style
     require('vim-jb.colors')
 end
 
